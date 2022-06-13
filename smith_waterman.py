@@ -1,4 +1,4 @@
-def smithWaterman(seq1, seq2, match, mismatch, gapA, gapB):
+def smithWaterman(seq1, seq2, subst_matrix, gapA, gapB, alphabet):
   traceback = [[None] * (len(seq1)+1) for i in range(len(seq2)+1)]
   lines = [[0] * (len(seq1) + 1)]
   for i in range(len(seq2)):
@@ -7,14 +7,13 @@ def smithWaterman(seq1, seq2, match, mismatch, gapA, gapB):
   gap_repeat = 1
   for i in range(1, len(seq2)+1):
     for j in range(1, len(seq1)+1):
-      status = seq1[j-1] == seq2[i-1]
-      if status:
-        status = match
-      else:
-        status = mismatch
+      seq1_char = seq1[j-1]
+      seq2_char = seq2[i-1]
+      match_score = subst_matrix[alphabet.index(seq1_char)][alphabet.index(seq2_char)]
+      
       gap_number = gapA + gapB * gap_repeat
       up = lines[i-1][j] + gap_number
-      diag = lines[i-1][j-1] + status
+      diag = lines[i-1][j-1] + match_score
       left = lines[i][j-1] + gap_number
       best = max(up, left, diag)
       if best == left or best == up:
@@ -76,11 +75,9 @@ def smithWaterman(seq1, seq2, match, mismatch, gapA, gapB):
     if alignment1[i] == '-' or alignment2[i] == '-':
       score += gap_number_score
       gap_repeat_score += 1
-    elif alignment1[i] == alignment2[i] :
-      score += match
-      gap_repeat_score = 1
     else:
-      score += mismatch
+      match_score = subst_matrix[alphabet.index(alignment1[i])][alphabet.index(alignment2[i])]
+      score += match_score
       gap_repeat_score = 1
   result = (alignment1, alignment2, score)
   return(result)
