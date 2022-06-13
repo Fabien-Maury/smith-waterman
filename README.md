@@ -3,7 +3,7 @@
 # Input : 
 * seq1, seq2 : 2 strings containing the sequences to align
 
-* subst_matrix : the substitution matrix bewteen alphabet characters, fromatted as a list of list
+* subst_matrix : the substitution matrix for all possible character pairs in this alphabet, written as a list of lists
 
 * gap : the gap is linear and defined as gap = gapA + gap_number * gapB, where gapA, and gapB are 2 numbers given as arguments and gap_number is the length of the gap continuous gap. The user needs to input only gapA and gapB.
 
